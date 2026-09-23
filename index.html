@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Рабочий дашборд подготовки Зимнего фестиваля Мясо / Рыба." />
+    <meta name="theme-color" content="#071727" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23071727'/%3E%3Cpath d='M18 20h28v8H18zm3 12h22l-3 15H24z' fill='%23f4bb36'/%3E%3Cpath d='M28 35h8' stroke='%23071727' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E" />
+    <title>Зимний фестиваль Мясо / Рыба — дашборд подготовки</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script defer src="app.js"></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="#overview" aria-label="Зимний фестиваль Мясо / Рыба">
+          <span class="brand-mark" aria-hidden="true">М/Р</span>
+          <span>
+            <strong>МЯСО / РЫБА</strong>
+            <small>зимний фестиваль · проектный дашборд</small>
+          </span>
+        </a>
+        <div class="topbar-meta">
+          <span class="status-chip status-chip--work">Подготовка к заполнению</span>
+          <span class="updated">Ожидаются исходные материалы</span>
+        </div>
+      </header>
+
+      <main>
+        <section class="hero" id="overview">
+          <article class="hero-budget" aria-label="Статус бюджета">
+            <span>Бюджет</span>
+            <strong>Не сформирован.<br />Ожидает материалов.</strong>
+          </article>
+          <div class="event-window">
+            <span>Окно фестиваля</span>
+            <strong>Сроки уточняются</strong>
+            <small>будут добавлены из плана подготовки</small>
+          </div>
+          <div class="hero-information">
+            <article class="hero-detail">
+              <p class="section-label">Выбранные локации</p>
+              <ul class="location-list">
+                <li><strong>Основная площадка:</strong> определяется по брифу</li>
+                <li><strong>Фуд-зоны:</strong> будут добавлены после загрузки схемы</li>
+                <li><strong>Активности:</strong> локации уточняются</li>
+                <li><strong>Резервный сценарий:</strong> будет сформирован по материалам</li>
+              </ul>
+            </article>
+            <article class="hero-detail">
+              <p class="section-label">Ориентировочный тайминг</p>
+              <dl class="day-timing">
+                <div><dt>День 1</dt><dd>тайминг будет добавлен</dd></div>
+                <div><dt>День 2</dt><dd>тайминг будет добавлен</dd></div>
+                <div><dt>День 3</dt><dd>тайминг будет добавлен</dd></div>
+              </dl>
+            </article>
+          </div>
+        </section>
+
+        <nav class="view-tabs" aria-label="Разделы дашборда">
+          <button class="view-tab is-active" type="button" data-view-target="overview-panel">Обзор</button>
+          <button class="view-tab" type="button" data-view-target="schedule-panel">График задач <span id="task-total"></span></button>
+          <button class="view-tab" type="button" data-view-target="program-panel">Программа мероприятий</button>
+        </nav>
+
+        <section id="overview-panel" class="view-panel is-active">
+          <div class="kpi-grid" aria-label="Ключевые показатели">
+            <article class="kpi-card"><p>Цель по гостям</p><strong>—</strong><span>будет добавлена из брифа</span></article>
+            <article class="kpi-card"><p>Плановая выручка</p><strong>—</strong><span>будет рассчитана после бюджета</span></article>
+            <article class="kpi-card"><p>Механики</p><strong>—</strong><span>будут добавлены из концепции</span></article>
+            <article class="kpi-card"><p>Программа</p><strong>—</strong><span>будет сформирована по таймингу</span></article>
+          </div>
+
+          <div class="dashboard-grid dashboard-grid--primary">
+            <article class="panel progress-panel">
+              <div class="panel-heading">
+                <div><p class="section-label">Готовность плана</p><h2>Статус задач</h2></div>
+                <div class="progress-total"><strong id="completed-percent">—</strong><span>готово</span></div>
+              </div>
+              <div class="stacked-bar" id="stacked-bar" aria-label="Распределение задач по статусам"></div>
+              <div class="status-list" id="status-list"></div>
+              <p class="panel-note">После загрузки материалов задачи, статусы и готовность будут заполнены по исходному плану.</p>
+            </article>
+
+            <article class="panel milestones-panel">
+              <div class="panel-heading">
+                <div><p class="section-label">Ближайшие контрольные точки</p><h2>Что держим в фокусе</h2></div>
+                <span class="calendar-badge">старт</span>
+              </div>
+              <ol class="milestone-list">
+                <li><time>—</time><span>Загрузить бриф фестиваля</span></li>
+                <li><time>—</time><span>Загрузить план задач и график подготовки</span></li>
+                <li><time>—</time><span>Загрузить программу мероприятий</span></li>
+                <li><time>—</time><span>Зафиксировать даты и площадки</span></li>
+              </ol>
+            </article>
+          </div>
+
+          <div class="dashboard-grid dashboard-grid--secondary">
+            <article class="panel focus-panel">
+              <div class="panel-heading"><div><p class="section-label">Контуры управления</p><h2>Параметры фестиваля</h2></div></div>
+              <dl class="control-list">
+                <div><dt>Аудитория</dt><dd>Уточняется</dd></div><div><dt>Средний чек</dt><dd>Уточняется</dd></div>
+                <div><dt>Период</dt><dd>Уточняется</dd></div><div><dt>Площадка</dt><dd>Уточняется</dd></div>
+                <div><dt>Формат</dt><dd>Уточняется</dd></div><div><dt>Механика</dt><dd>Уточняется</dd></div>
+              </dl>
+            </article>
+
+            <article class="panel risks-panel">
+              <div class="panel-heading">
+                <div><p class="section-label">Риски и решения</p><h2>Требуют внимания</h2></div>
+                <span class="risk-count">4 точки</span>
+              </div>
+              <div class="risk-list">
+                <div class="risk-item risk-item--decision"><span class="risk-state">Данные</span><p><strong>Бюджет</strong><br />Требуется исходный расчёт для привязки показателей.</p></div>
+                <div class="risk-item"><span class="risk-state">Данные</span><p><strong>Сроки</strong><br />Нужен утверждённый календарный план.</p></div>
+                <div class="risk-item"><span class="risk-state">Данные</span><p><strong>Локации</strong><br />Нужны схема площадки и погодный сценарий.</p></div>
+                <div class="risk-item"><span class="risk-state">Данные</span><p><strong>Программа</strong><br />Нужны состав и тайминг мероприятий.</p></div>
+              </div>
+            </article>
+          </div>
+
+          <section class="panel workstreams-panel">
+            <div class="panel-heading">
+              <div><p class="section-label">Карта работ</p><h2>Направления подготовки</h2></div>
+              <button class="text-action" type="button" data-show-schedule>Открыть весь график →</button>
+            </div>
+            <div class="workstream-grid" id="workstream-grid"></div>
+          </section>
+        </section>
+
+        <section id="schedule-panel" class="view-panel">
+          <div class="schedule-heading">
+            <div>
+              <p class="section-label">График подготовки</p><h2>Задачи и сроки</h2>
+              <p>Список будет заполнен по плану задач после загрузки исходных материалов.</p>
+            </div>
+            <button class="text-action" type="button" data-show-overview>← Вернуться к обзору</button>
+          </div>
+          <div class="filters" aria-label="Фильтры графика">
+            <label>Статус<select id="status-filter"><option value="all">Все статусы</option></select></label>
+            <label>Направление<select id="stream-filter"><option value="all">Все направления</option></select></label>
+            <p id="visible-task-count" aria-live="polite"></p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>№</th><th>Задача</th><th>Начало</th><th>Срок</th><th>Статус</th></tr></thead>
+              <tbody id="task-table-body"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="program-panel" class="view-panel">
+          <div class="schedule-heading">
+            <div>
+              <p class="section-label">Зимний фестиваль Мясо / Рыба</p><h2>Программа мероприятий</h2>
+              <p>После загрузки программы здесь появятся расписание по дням, тайминг и наполнение активностей.</p>
+            </div>
+            <span class="calendar-badge">даты уточняются</span>
+          </div>
+
+          <div class="program-days">
+            <article class="program-day">
+              <div class="program-day-heading"><span>День 1</span><small>дата и часы уточняются</small></div>
+              <ol><li><time>—</time><div><strong>Программа ожидается</strong><p>Временные слоты будут добавлены из исходного файла.</p></div></li></ol>
+            </article>
+            <article class="program-day">
+              <div class="program-day-heading"><span>День 2</span><small>дата и часы уточняются</small></div>
+              <ol><li><time>—</time><div><strong>Программа ожидается</strong><p>Временные слоты будут добавлены из исходного файла.</p></div></li></ol>
+            </article>
+            <article class="program-day">
+              <div class="program-day-heading"><span>День 3</span><small>дата и часы уточняются</small></div>
+              <ol><li><time>—</time><div><strong>Программа ожидается</strong><p>Временные слоты будут добавлены из исходного файла.</p></div></li></ol>
+            </article>
+          </div>
+
+          <div class="program-note">Загрузите программу, план задач и бриф — я перенесу фактические данные в этот дашборд.</div>
+
+          <section class="program-library" aria-label="Наполнение программы">
+            <article class="program-content-card"><p class="section-label">Фуд-зона</p><h3>Наполнение уточняется</h3><p>Будет заполнено по концепции и программе.</p></article>
+            <article class="program-content-card"><p class="section-label">Активности</p><h3>Наполнение уточняется</h3><p>Будет заполнено по сценарию фестиваля.</p></article>
+            <article class="program-content-card"><p class="section-label">Мастер-классы</p><h3>Наполнение уточняется</h3><p>Будет заполнено по программе мероприятий.</p></article>
+            <article class="program-content-card"><p class="section-label">Партнёры и подрядчики</p><h3>Наполнение уточняется</h3><p>Будет заполнено по плану подготовки.</p></article>
+          </section>
+        </section>
+      </main>
+
+      <footer>
+        <span>Зимний фестиваль Мясо / Рыба · рабочий дашборд проекта</span>
+        <span>Данные будут добавлены после загрузки исходных материалов</span>
+      </footer>
+    </div>
+  </body>
+</html>
