@@ -60,6 +60,7 @@ h2 { color: var(--navy); font-size: 21px; letter-spacing: -.025em; margin-bottom
 .day-timing div + div { border-top: 1px solid #24425c; }
 .day-timing dt { color: var(--ink); font-size: 12px; font-weight: 800; }
 .day-timing dd { margin: 0; color: #c9d9e8; font-size: 11px; line-height: 1.35; }
+.timing-status { color: var(--orange); font-size: 11px; font-weight: 750; letter-spacing: .04em; margin: 10px 0 0; text-transform: uppercase; }
 .view-tabs { display: flex; gap: 8px; margin-bottom: 24px; border-bottom: 1px solid var(--line); }
 .view-tab { appearance: none; border: 0; background: none; padding: 11px 16px 13px; border-bottom: 3px solid transparent; color: var(--muted); font-size: 14px; font-weight: 700; }
 .view-tab:hover { color: var(--navy); }
