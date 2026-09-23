@@ -72,10 +72,22 @@ function normalizeStatus(value) {
   return statusMeta[status] ? status : "Не начато";
 }
 
+function loadSpreadsheetLibrary() {
+  if (window.XLSX) return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = "https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js";
+    script.onload = resolve;
+    script.onerror = () => reject(new Error("Не удалось подключить модуль чтения графика"));
+    document.head.append(script);
+  });
+}
+
 async function loadTasksFromSchedule() {
   try {
+    await loadSpreadsheetLibrary();
     const response = await fetch(encodeURI(scheduleFile), { cache: "no-store" });
-    if (!response.ok || !window.XLSX) throw new Error("График пока недоступен");
+    if (!response.ok) throw new Error("График пока недоступен");
     const workbook = XLSX.read(await response.arrayBuffer(), { type: "array", cellDates: true });
     const sheet = workbook.Sheets[workbook.SheetNames[0]];
     const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, raw: true, defval: "" });
@@ -145,8 +157,8 @@ function renderWorkstreams() {
 
 function renderFilters() {
   const streams = Array.from(new Set(tasks.map((task) => task.stream)));
-  one("#status-filter").insertAdjacentHTML("beforeend", statusOrder.map((status) => '<option value="' + status + '">' + status + '</option>').join(""));
-  one("#stream-filter").insertAdjacentHTML("beforeend", streams.map((stream) => '<option value="' + stream + '">' + stream + '</option>').join(""));
+  one("#status-filter").innerHTML = '<option value="all">Все статусы</option>' + statusOrder.map((status) => '<option value="' + status + '">' + status + '</option>').join("");
+  one("#stream-filter").innerHTML = '<option value="all">Все направления</option>' + streams.map((stream) => '<option value="' + stream + '">' + stream + '</option>').join("");
 }
 
 function renderTaskTable() {
@@ -170,7 +182,12 @@ one("#status-filter").addEventListener("change", renderTaskTable);
 one("#stream-filter").addEventListener("change", renderTaskTable);
 
 async function initializeDashboard() {
+  renderDashboard();
   tasks = await loadTasksFromSchedule();
+  renderDashboard();
+}
+
+function renderDashboard() {
   renderProgress();
   renderWorkstreams();
   renderFilters();
