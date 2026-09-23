@@ -32,10 +32,81 @@ const rawTasks = [
   "14|Фестиваль|Закрытие фестиваля|09.01.2027|09.01.2027"
 ];
 
-const tasks = rawTasks.map((row) => {
+const fallbackTasks = rawTasks.map((row) => {
   const cells = row.split("|");
   return { id: cells[0], stream: cells[1], title: cells[2], start: cells[3], due: cells[4], status: "Не начато" };
 });
+let tasks = fallbackTasks;
+
+const scheduleFile = "График_подготовки_Зимний фестиваль _Мясо-Рыба.xlsx";
+
+function streamForTask(id) {
+  const taskId = String(id).replace(/\.$/, "");
+  if (["1", "2", "3", "4", "5", "6"].includes(taskId)) return "Концепция и формат";
+  if (taskId === "8") return "Площадка";
+  if (["9", "10", "10.1", "10.2", "10.3"].includes(taskId)) return "Бюджет";
+  if (taskId === "11" || taskId.startsWith("11.")) return "Маркетинг";
+  if (taskId === "12" || taskId.startsWith("12.")) return "Food и развлечения";
+  if (["13", "14"].includes(taskId)) return "Фестиваль";
+  return "Другое";
+}
+
+function normalizeDate(value) {
+  if (typeof value === "number" && window.XLSX) {
+    const date = XLSX.SSF.parse_date_code(value);
+    if (date) {
+      return String(date.d).padStart(2, "0") + "." + String(date.m).padStart(2, "0") + "." + date.y;
+    }
+  }
+  if (value instanceof Date) {
+    return String(value.getDate()).padStart(2, "0") + "." + String(value.getMonth() + 1).padStart(2, "0") + "." + value.getFullYear();
+  }
+  const text = String(value).trim();
+  const match = text.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
+  if (!match) return text;
+  return match[1].padStart(2, "0") + "." + match[2].padStart(2, "0") + "." + match[3];
+}
+
+function normalizeStatus(value) {
+  const status = String(value || "").trim();
+  return statusMeta[status] ? status : "Не начато";
+}
+
+async function loadTasksFromSchedule() {
+  try {
+    const response = await fetch(encodeURI(scheduleFile), { cache: "no-store" });
+    if (!response.ok || !window.XLSX) throw new Error("График пока недоступен");
+    const workbook = XLSX.read(await response.arrayBuffer(), { type: "array", cellDates: true });
+    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+    const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, raw: true, defval: "" });
+    const headerRow = rows.findIndex((row) => String(row[0]).trim() === "№" && String(row[1]).trim() === "Задача");
+    if (headerRow < 0) throw new Error("Не найдена строка заголовков");
+    const headers = rows[headerRow].map((value) => String(value).trim());
+    const startColumn = headers.findIndex((value) => value === "Начало");
+    const dueColumn = headers.findIndex((value) => value.startsWith("Окончание"));
+    const statusColumn = headers.findIndex((value) => value === "Статус");
+    const importedTasks = rows.slice(headerRow + 1)
+      .filter((row) => String(row[0]).trim() && String(row[1]).trim() && String(row[startColumn]).trim() && String(row[dueColumn]).trim())
+      .map((row) => {
+        const id = String(row[0]).trim().replace(/\.$/, "");
+        return {
+          id,
+          stream: streamForTask(id),
+          title: String(row[1]).trim(),
+          start: normalizeDate(row[startColumn]),
+          due: normalizeDate(row[dueColumn]),
+          status: normalizeStatus(statusColumn >= 0 ? row[statusColumn] : "")
+        };
+      });
+    if (!importedTasks.length) throw new Error("В графике нет задач");
+    one("#source-status").textContent = "Источник: график подготовки";
+    return importedTasks;
+  } catch (error) {
+    one("#source-status").textContent = "Источник: резервная версия графика";
+    console.warn("Не удалось загрузить график подготовки", error);
+    return fallbackTasks;
+  }
+}
 
 const statusMeta = {
   "Выполнено": { label: "Выполнено", color: "#3d8a61", css: "done" },
@@ -98,7 +169,12 @@ document.querySelectorAll("[data-show-overview]").forEach((button) => button.add
 one("#status-filter").addEventListener("change", renderTaskTable);
 one("#stream-filter").addEventListener("change", renderTaskTable);
 
-renderProgress();
-renderWorkstreams();
-renderFilters();
-renderTaskTable();
+async function initializeDashboard() {
+  tasks = await loadTasksFromSchedule();
+  renderProgress();
+  renderWorkstreams();
+  renderFilters();
+  renderTaskTable();
+}
+
+initializeDashboard();
