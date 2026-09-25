@@ -7,7 +7,7 @@
     <meta name="theme-color" content="#071727" />
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23071727'/%3E%3Cpath d='M18 20h28v8H18zm3 12h22l-3 15H24z' fill='%23f4bb36'/%3E%3Cpath d='M28 35h8' stroke='%23071727' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E" />
     <title>Зимний фестиваль Мясо / Рыба — дашборд подготовки</title>
-    <link rel="stylesheet" href="styles.css?v=20260923-2" />
+    <link rel="stylesheet" href="styles.css?v=20260925-1" />
     <script defer src="app.js?v=20260923-6"></script>
   </head>
   <body>
@@ -28,9 +28,13 @@
 
       <main>
         <section class="hero" id="overview">
-          <article class="hero-budget" aria-label="Статус бюджета">
+          <article class="hero-budget" aria-label="Плановые показатели бюджета">
             <span>Бюджет</span>
-            <strong>В разработке.<br />План: 11–27.11.2026.</strong>
+            <dl class="hero-budget-list">
+              <div><dt>Планируемые затраты</dt><dd>11 702 893,62 ₽</dd></div>
+              <div><dt>Планируемый доход</dt><dd>15 000 000,00 ₽</dd></div>
+              <div><dt>Планируемая прибыль</dt><dd>3 297 106,38 ₽</dd></div>
+            </dl>
           </article>
           <div class="event-window">
             <span>Окно фестиваля</span>
@@ -56,6 +60,7 @@
           <button class="view-tab is-active" type="button" data-view-target="overview-panel">Обзор</button>
           <button class="view-tab" type="button" data-view-target="schedule-panel">График задач <span id="task-total"></span></button>
           <button class="view-tab" type="button" data-view-target="program-panel">Программа мероприятий</button>
+          <button class="view-tab" type="button" data-view-target="budget-panel">Бюджет</button>
         </nav>
 
         <section id="overview-panel" class="view-panel is-active">
@@ -125,6 +130,17 @@
             </div>
             <div class="workstream-grid" id="workstream-grid"></div>
           </section>
+        </section>
+
+        <section id="budget-panel" class="view-panel budget-workbook-view">
+          <div class="schedule-heading">
+            <div>
+              <p class="section-label">Зимний фестиваль Мясо / Рыба</p><h2>Бюджет</h2>
+              <p>Исходный файл бюджета отображается без изменения его структуры.</p>
+            </div>
+            <button class="text-action" type="button" data-show-overview>← Вернуться к обзору</button>
+          </div>
+          <iframe class="budget-workbook-frame" title="Бюджет Мясо и Рыба" src="https://view.officeapps.live.com/op/embed.aspx?src=https%3A%2F%2Fmrskorolkovanew-cpu.github.io%2Fwinter-festival-meat-fish-dashboard%2F%25D0%2591%25D1%258E%25D0%25B4%25D0%25B6%25D0%25B5%25D1%2582%2520%25D0%259C%25D1%258F%25D1%2581%25D0%25BE%2520%25D0%25B8%2520%25D0%25A0%25D1%258B%25D0%25B1%25D0%25B0.xlsx"></iframe>
         </section>
 
         <section id="schedule-panel" class="view-panel">
